@@ -1,0 +1,262 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PAPAS BBQ SHAWARMAA | Order Online</title>
+
+<style>
+*{box-sizing:border-box}
+body{
+ margin:0;background:#111;color:#fff;
+ font-family:Arial,sans-serif;padding-bottom:35px
+}
+header{
+ background:#080808;padding:18px 16px;
+ display:flex;align-items:center;gap:14px;
+ border-bottom:2px solid #ffd500
+}
+.logo{
+ width:65px;height:65px;object-fit:contain;
+ background:#ffdc00;border-radius:12px
+}
+.brand h1{font-size:19px;margin:0;color:#ffd500}
+.brand p{font-size:11px;margin:5px 0;color:#ccc}
+.hero{
+ margin:16px;padding:25px 18px;
+ border-radius:18px;
+ background:linear-gradient(130deg,#302500,#111);
+ border:1px solid #6e5700
+}
+.hero h2{color:#ffd500;font-size:25px;margin:0 0 9px}
+.hero p{color:#ddd;font-size:14px}
+.tag{
+ display:inline-block;background:#ffd500;color:#111;
+ padding:8px 13px;border-radius:20px;font-weight:bold;
+ font-size:12px
+}
+h3.section{margin:24px 16px 12px;color:#ffd500}
+.categories{
+ display:flex;gap:9px;overflow-x:auto;padding:0 16px 10px
+}
+.categories button{
+ flex-shrink:0;border:1px solid #665300;
+ background:#222;color:white;padding:11px 16px;
+ border-radius:22px
+}
+.categories button.active{background:#ffd500;color:#111}
+.menu{
+ display:grid;grid-template-columns:1fr 1fr;
+ gap:12px;padding:0 14px
+}
+.item{
+ background:#202020;border:1px solid #383838;
+ border-radius:14px;overflow:hidden;padding:13px
+}
+.food{
+ height:85px;display:grid;place-items:center;
+ font-size:52px;background:#302900;border-radius:10px
+}
+.item h4{font-size:14px;margin:12px 0 6px}
+.price{color:#ffd500;font-weight:bold}
+.add{
+ width:100%;margin-top:12px;padding:10px;
+ background:#ffd500;color:#111;border:0;
+ border-radius:9px;font-weight:bold
+}
+.cart{
+ margin:22px 14px;padding:18px;
+ background:#202020;border:1px solid #665300;
+ border-radius:15px
+}
+.cart h3{color:#ffd500;margin-top:0}
+.cartrow{
+ display:flex;justify-content:space-between;
+ gap:10px;padding:9px 0;border-bottom:1px solid #444;
+ font-size:13px
+}
+input,textarea,select{
+ width:100%;padding:13px;margin:7px 0;
+ border:1px solid #555;border-radius:9px;
+ background:#292929;color:white;font-size:14px
+}
+.orderbtn{
+ width:100%;padding:15px;margin-top:12px;
+ background:#ffd500;color:#111;border:0;
+ border-radius:10px;font-weight:bold;font-size:16px
+}
+.total{font-size:19px;color:#ffd500;font-weight:bold}
+footer{text-align:center;color:#999;padding:20px;font-size:12px}
+</style>
+</head>
+
+<body>
+
+<header>
+<img class="logo" src="IMG_0934.jpeg" alt="PAPAS Logo">
+<div class="brand">
+<h1>PAPAS BBQ SHAWARMAA</h1>
+<p>Fresh • Delicious • Made with Love</p>
+</div>
+</header>
+
+<section class="hero">
+<span class="tag">ORDER ONLINE</span>
+<h2>Cravings? We've Got You!</h2>
+<p>Enjoy your favourite shawarma, burgers and more.</p>
+</section>
+
+<h3 class="section">Explore Our Menu</h3>
+<div class="categories" id="categories"></div>
+<div class="menu" id="menu"></div>
+
+<section class="cart" id="cart">
+<h3>🛒 Your Cart</h3>
+<div id="cartitems">Your cart is empty.</div>
+<p class="total" id="total">Total: ₹0</p>
+
+<h3>Checkout Details</h3>
+<input id="customer" placeholder="Your full name">
+<input id="phone" type="tel" placeholder="Your phone number">
+<select id="orderType">
+<option value="Delivery">Home Delivery</option>
+<option value="Takeaway">Takeaway</option>
+</select>
+<textarea id="address" rows="3" placeholder="Delivery address / location"></textarea>
+<textarea id="note" rows="2" placeholder="Special instructions (optional)"></textarea>
+
+<button class="orderbtn" onclick="placeOrder()">
+ORDER VIA WHATSAPP
+</button>
+</section>
+
+<footer>
+PAPAS BBQ SHAWARMAA<br>
+Thank you for choosing PAPAS ❤️
+</footer>
+
+<script>
+const products = [
+{name:"Chicken Shawarma",price:99,cat:"Shawarma",emoji:"🌯"},
+{name:"Veg Shawarma",price:150,cat:"Shawarma",emoji:"🥙"},
+{name:"Paneer Shawarma",price:170,cat:"Shawarma",emoji:"🌯"},
+{name:"Falafel Shawarma",price:170,cat:"Shawarma",emoji:"🥙"},
+{name:"Bun Shawarma",price:150,cat:"Shawarma",emoji:"🍔"},
+{name:"Burger",price:180,cat:"Burgers",emoji:"🍔"},
+{name:"Sandwich",price:150,cat:"Burgers",emoji:"🥪"},
+{name:"Fries",price:100,cat:"Sides",emoji:"🍟"},
+{name:"Fried Chicken",price:100,cat:"Sides",emoji:"🍗"},
+{name:"Wings",price:150,cat:"Sides",emoji:"🍗"},
+{name:"Chips Shawarma",price:200,cat:"Shawarma",emoji:"🍟"},
+{name:"Fresh Juice",price:70,cat:"Drinks",emoji:"🥤"},
+{name:"Milkshake",price:100,cat:"Drinks",emoji:"🥛"},
+{name:"Mojito",price:80,cat:"Drinks",emoji:"🍹"},
+{name:"Cold Coffee",price:120,cat:"Drinks",emoji:"🧋"},
+{name:"Veg Salad",price:180,cat:"Salads",emoji:"🥗"},
+{name:"Non-Veg Salad",price:220,cat:"Salads",emoji:"🥗"}
+];
+
+let selected="All";
+let cart={};
+
+function showCategories(){
+ const cats=["All",...new Set(products.map(p=>p.cat))];
+ document.getElementById("categories").innerHTML=
+ cats.map(c=>`<button class="${selected===c?'active':''}"
+ onclick="selectCategory('${c}')">${c}</button>`).join("");
+}
+
+function selectCategory(c){
+ selected=c;
+ showCategories();
+ showMenu();
+}
+
+function showMenu(){
+ const list=products.filter(p=>selected==="All"||p.cat===selected);
+ document.getElementById("menu").innerHTML=list.map(p=>`
+ <div class="item">
+ <div class="food">${p.emoji}</div>
+ <h4>${p.name}</h4>
+ <div class="price">₹${p.price}</div>
+ <button class="add" onclick="addItem('${p.name}')">+ ADD</button>
+ </div>`).join("");
+}
+
+function addItem(name){
+ cart[name]=(cart[name]||0)+1;
+ showCart();
+}
+
+function changeQty(name,change){
+ cart[name]=(cart[name]||0)+change;
+ if(cart[name]<=0) delete cart[name];
+ showCart();
+}
+
+function showCart(){
+ let total=0;
+ let html="";
+ Object.keys(cart).forEach(name=>{
+ const p=products.find(x=>x.name===name);
+ const amount=p.price*cart[name];
+ total+=amount;
+ html+=`<div class="cartrow">
+ <span>${name}<br>₹${p.price} each</span>
+ <span>
+ <button onclick="changeQty('${name}',-1)">−</button>
+ ${cart[name]}
+ <button onclick="changeQty('${name}',1)">+</button>
+ </span>
+ <b>₹${amount}</b>
+ </div>`;
+ });
+ document.getElementById("cartitems").innerHTML=
+ html||"Your cart is empty.";
+ document.getElementById("total").innerText="Total: ₹"+total;
+}
+
+function placeOrder(){
+ if(Object.keys(cart).length===0){
+ alert("Please add items to your cart.");
+ return;
+ }
+
+ const name=document.getElementById("customer").value.trim();
+ const phone=document.getElementById("phone").value.trim();
+ const type=document.getElementById("orderType").value;
+ const address=document.getElementById("address").value.trim();
+ const note=document.getElementById("note").value.trim();
+
+ if(!name||!phone||!address){
+ alert("Please fill in your name, phone number and address.");
+ return;
+ }
+
+ let total=0;
+ let message="*NEW PAPAS BBQ SHAWARMAA ORDER*%0A%0A";
+ message+=`Name: ${name}%0APhone: ${phone}%0AOrder: ${type}%0A`;
+ message+=`Address: ${address}%0A%0A*ITEMS*%0A`;
+
+ Object.keys(cart).forEach(item=>{
+ const p=products.find(x=>x.name===item);
+ total+=p.price*cart[item];
+ message+=`${item} x ${cart[item]} = Rs.${p.price*cart[item]}%0A`;
+ });
+
+ message+=`%0A*TOTAL: Rs.${total}*`;
+ if(note) message+=`%0ANote: ${note}`;
+
+ const url="https://wa.me/919606066369?text="+encodeURIComponent(
+ decodeURIComponent(message)
+ );
+ window.open(url,"_blank");
+}
+
+showCategories();
+showMenu();
+showCart();
+</script>
+</body>
+</html>
